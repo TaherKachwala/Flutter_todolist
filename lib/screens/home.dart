@@ -1,7 +1,10 @@
 // import 'dart:ffi';
 
+// import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:todolist/constants/colors.dart';
+import 'package:todolist/widgets/timedate.dart';
 import 'package:todolist/widgets/todo_item.dart';
 import 'package:todolist/model/todo.dart';
 
@@ -13,9 +16,10 @@ class Home extends StatefulWidget{
 }
 
 class _HomeState extends State<Home> {
+
   final todoList = ToDo.todoList();
   List<ToDo> _foundToDo =[];
-  final _todoController = TextEditingController();
+  final _todoController = TextEditingController();  // to wirte text in textBox //
 
 @override
   void initState() {
@@ -51,7 +55,10 @@ class _HomeState extends State<Home> {
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 20,vertical: 15) ,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,        //date
           children: [
+            // DatePickerTxt(),
+            // SchduleBtn(),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 15),
               decoration: BoxDecoration(
@@ -88,41 +95,47 @@ class _HomeState extends State<Home> {
             Align(alignment: Alignment.bottomCenter,
       child: Row(
         children: [
-          Expanded(child: Container(
-            margin: EdgeInsets.only(
-              bottom: 20,
-              right: 20,
-              left: 20,
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 5),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              // boxShadow: const BoxShadow(
-              //   color: colors.grey,
-              //   offset: Offset(0.0,0.0),
-              //   blurRadius: 10.0,
-              //   spreadRadius: 0.0,
-              // ),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: TextField(
-              controller: _todoController,
-              decoration: InputDecoration(
-                hintText: 'Add New Iteam.',
-                contentPadding: const EdgeInsets.symmetric(horizontal:5),
-                border: InputBorder.none
-              ),
-            ),
-          )),
+          // Expanded(child: Container(
+          //   margin: EdgeInsets.only(
+          //     bottom: 20,
+          //     right: 20,
+          //     left: 20,
+          //   ),
+          //   padding: EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+          //   decoration: BoxDecoration(
+          //     color: Colors.white,
+          //     // boxShadow: const BoxShadow(
+          //     //   color: colors.grey,
+          //     //   offset: Offset(0.0,0.0),
+          //     //   blurRadius: 10.0,
+          //     //   spreadRadius: 0.0,
+          //     // ),
+          //     borderRadius: BorderRadius.circular(10),
+          //   ),
+          //   child: TextField(
+          //     controller: _todoController,
+          //     decoration: InputDecoration(
+          //       hintText: 'Add New Iteam.',
+          //       contentPadding: const EdgeInsets.symmetric(horizontal:5),
+          //       border: InputBorder.none
+          //     ),
+          //   ),
+          // )),
           Container(
-            margin: EdgeInsets.only(
+            width: 440,
+            margin: 
+            EdgeInsets.only(
               bottom: 20,
               right: 20,
             ),
             child: ElevatedButton(
-              child: Text('+',style: TextStyle(fontSize: 40),),
-              onPressed: () {
-                _addToDoItem(_todoController.text);
+              child: Text('ADD ITEMS',style: TextStyle(fontSize: 22),),
+              onPressed: () async {
+                final result = await showDialog(context: context, builder: (context) {
+                  return AddDialog(symptoms: _todoController, clinic: "", patientName: "", height: 12, weight: 12, clinicId: "");
+                } );
+                // print(result);
+                _addToDoItem(result);  // to write Text which is given by user //  
               },
               style: ElevatedButton.styleFrom(
                 primary: tdBlue,
@@ -148,6 +161,7 @@ class _HomeState extends State<Home> {
       todoList.removeWhere((item) => item.id == id);
     });
   }
+  // create a fuction to write text //
   void _addToDoItem(String todo) {
     setState(() {
       todoList.add(ToDo(id: DateTime.now().millisecondsSinceEpoch.toString(), 
@@ -169,3 +183,73 @@ class _HomeState extends State<Home> {
     });
   }
 } 
+// class DatePickerTxt extends StatefulWidget{
+//   const DatePickerTxt ({
+//     Key? key,
+//   }) : super(key: key);
+
+//   @override
+//   State<DatePickerTxt> createState() => _DatePickerTxtState();
+  
+//   static void showDateTimePicker(BuildContext context, {required bool showTileActions, required Function(dynamic date) onChanged, required Null Function(dynamic date) onConfirm}) {}
+// }
+
+// class _DatePickerTxtState extends State<DatePickerTxt>{
+//   var scheduleTime;
+
+//   @override
+//   Widget build(BuildContext) {
+//     return TextButton(
+//       onPressed: () {
+//         DatePickerTxt.showDateTimePicker(
+//           context,
+//           showTileActions: true,
+//           onChanged: (date) => scheduleTime = date,
+//           onConfirm: (date) {},
+//         );
+//       },
+//       child: const Text(
+//         'Select Date Time',
+//         style: TextStyle(color: Colors.blue),
+//       )
+//     );
+//   }
+// }
+
+// class SchduleBtn extends StatelessWidget{
+//   var scheduleTime;
+
+//   SchduleBtn ({
+//     Key? key,
+//   }) : super(key: key);
+  
+//   @override
+//   Widget build(BuildContext context) {
+//     return ElevatedButton(
+//       child: const Text('Schedule Notifications'),
+//       onPressed: () {
+//         debugPrint('Notification Scheduled for $scheduleTime');
+//         NotificationService().scheduleNotification(
+//           title: 'Scheduled Notification',
+//           Body: '$scheduleTime',
+//           scheduledNoificationDateTime: scheduleTime);
+//       },
+//     );
+//   }
+// }
+
+// class NotificationService {
+//   void scheduleNotification({required String title, required String Body, required scheduledNoificationDateTime}) {}
+// }
+
+
+// Future showNotification(
+//   {int id=0, String? title, String? body, String? payLoad}) async {
+//     var notificationPlugin;
+//     return notificationPlugin.show(
+//       id, title, body, await NotificationDetails(),
+//     );
+//   }
+  
+//   NotificationDetails() {
+//   }
