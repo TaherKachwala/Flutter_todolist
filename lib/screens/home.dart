@@ -132,7 +132,7 @@ class _HomeState extends State<Home> {
               child: Text('ADD ITEMS',style: TextStyle(fontSize: 22),),
               onPressed: () async {
                 final result = await showDialog(context: context, builder: (context) {
-                  return AddDialog(symptoms: _todoController, clinic: "", patientName: "", height: 12, weight: 12, clinicId: "");
+                  return AddDialog(symptoms: _todoController, clinic: "", patientName: "", height: 12, weight: 12, clinicId: "", addToDoItem: () { _addToDoItem (_todoController.text); },);
                 } );
                 // print(result);
                 _addToDoItem(result);  // to write Text which is given by user //  

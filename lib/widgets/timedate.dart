@@ -16,6 +16,7 @@ class AddDialog extends StatefulWidget {
     required this.height,
     required this.weight,
     required this.clinicId,
+    required this.addToDoItem,
   }) : super(key: key);
   //
   final TextEditingController symptoms;
@@ -24,6 +25,7 @@ class AddDialog extends StatefulWidget {
   final String clinicId;
   final double height;
   final double weight;
+  final VoidCallback addToDoItem;
 
   @override
   State<AddDialog> createState() => _AddDialogState();
@@ -163,7 +165,8 @@ class _AddDialogState extends State<AddDialog> {
               hintText: "Type Here..!",
               showIcon: false,
               titleOff: true,
-              textWidth: 260,
+              textWidth: 260, 
+              textEditingController: widget.symptoms,
             ),
             const SizedBox(
               height: 28,
@@ -178,12 +181,7 @@ class _AddDialogState extends State<AddDialog> {
                   },
                   invertedColors: true,
                 ),
-                SimpleBtn1(text: "ADD", onPressed: () {
-                  Navigator.of(context).pop(
-              //       TextField(
-              // controller: _todoController,)
-                  );
-                }),
+                SimpleBtn1(text: "ADD", onPressed: widget.addToDoItem),
               ],
             )
           ],
